@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.house.wym.dao.AddLessonMapper">
+    <resultMap type="com.house.wym.entity.AddLesson" id="BasicMap">
+        <id column="openid" jdbcType="INTEGER" property="openid" />
+        <result column="lessonid" jdbcType="VARCHAR" property="lessonid"/>
+        <result column="slesson" jdbcType="VARCHAR" property="slesson"/>
+        <result column="sclass" jdbcType="VARCHAR" property="sclass"/>
+        <result column="setTime" jdbcType="DATE" property="setTime"/>
+    </resultMap>
+    <!-- 按照时间顺序选择所有课程 -->
+    <select id="getMyLesson" resultMap="BasicMap">
+        select * from addlesson where  openid = #{userid}
+    </select>
+    <!-- 检查是否已经选过某门课，如果选过了，下次就不用添加了    -->
+    <select id="checkMyLesson" resultMap="BasicMap">
+        select * from addlesson where  openid = #{userid} and lessonid= #{lessonid}
+    </select>
+    <!--	添加课程，选课-->
+    <insert id="addMyLesson" >
+        insert into addlesson
+        values ( #{userid},#{lessonid},
+        #{slesson},#{sclass},Now()
+        )
+    </insert>
+    <!--删除我的选课-->
+    <delete id="delete_mylesson" >
+        delete from addlesson where  lessonid = #{lessonid} and openid = #{userid}
+    </delete>
+
+</mapper>

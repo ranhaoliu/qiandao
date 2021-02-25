@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.house.wym.dao.LessonMapper">
+	<resultMap type="com.house.wym.entity.Lesson" id="BasicMap">
+		<id column="lessonid" jdbcType="INTEGER" property="lessonid" />
+		<result column="openid" jdbcType="VARCHAR" property="openid"/>
+		<result column="slesson" jdbcType="VARCHAR" property="slesson"/>
+		<result column="sclass" jdbcType="VARCHAR" property="sclass"/>
+		<result column="setTime" jdbcType="DATE" property="setTime"/>
+	</resultMap>
+	<!-- 按照时间顺序选择所有课程 -->
+	<select id="getAllLessonByTime" resultMap="BasicMap" parameterType="com.house.wym.entity.Lesson">
+		select * from lesson order by setTime desc
+	</select>
+	<!--根据老师的openid 得到他的所有课程	-->
+	<select id="getAllLessonsByUserId" resultMap="BasicMap" parameterType="String">
+		select * from lesson where openid = #{userid} order by setTime desc
+	</select>
+	<!--学生添加选课-->
+	<insert id="addLesson" >
+		insert into lesson (openid,slesson,sclass,setTime)
+		values ( #{userid},
+		#{slesson},#{sclass},Now()
+		)
+	</insert>
+
+</mapper>

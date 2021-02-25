@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.house.wym.dao.QueQinMapper">
+    <resultMap type="com.house.wym.entity.QueQin" id="BasicMap">
+        <id column="keyid" jdbcType="INTEGER" property="keyid" />
+        <result column="lessonid" jdbcType="INTEGER" property="lessonid"/>
+        <result column="openid" jdbcType="VARCHAR" property="openid"/>
+        <result column="xuehao" jdbcType="INTEGER" property="xuehao"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="qtime" jdbcType="DATE" property="qtime"/>
+    </resultMap>
+
+    <!--保存缺勤列表-->
+    <insert id="saveQueQin">
+        insert into queqin
+        values ( #{keyid},#{lessonid},
+        #{openid},#{xuehao},#{name},Now()
+        )
+    </insert>
+    <select id="showQueQin" resultMap="BasicMap" parameterType="int">
+        select * from queqin where keyid = #{keyid}
+    </select>
+
+</mapper>

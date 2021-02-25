@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.house.wym.dao.UserMessageMapper">
+    <resultMap type="com.house.wym.entity.Student" id="BasicMap">
+        <id column="openid" jdbcType="VARCHAR" property="openid" />
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="xuehao" jdbcType="INTEGER" property="xuehao"/>
+        <result column="change" jdbcType="INTEGER" property="ischange"/>
+    </resultMap>
+    <!-- 根据openid拿到用户信息 -->
+    <select id="getStudentByUserId" resultMap="BasicMap">
+        select * from student
+        where openid = #{userid}
+    </select>
+    <!--	更改信息之前看一下是否是第一次修改-->
+    <select id="getStudentIsChange" resultType="Integer">
+        select ischange from student
+        where openid = #{userid}
+    </select>
+    <!--	检查用户是否注册-->
+    <select id="check_student" resultMap="BasicMap" parameterType="com.house.wym.entity.Student">
+        select * from student
+        where openid = #{userid}
+    </select>
+
+    <update id="changeMgs" parameterType="com.house.wym.entity.Student">
+        update student
+        set name= #{newname}, xuehao = #{newxuehao},ischange = 1
+        where
+        openid = #{userid}
+    </update>
+
+    <!--	注册-->
+    <insert id="addStudent" parameterType="com.house.wym.entity.Student">
+        insert into
+        Student
+        values
+        ( #{userid},
+        #{name},
+        #{xuehao},0
+        )
+    </insert>
+
+
+    <!--选出选了某门课的所有学生	order by xuehao asc-->
+    <select id="getAllStudentsByLessonId" resultMap="BasicMap" parameterType="int">
+        select * from student st , addlesson ad  where st.openid = ad.openid  and  ad.lessonid = #{lessonid}
+    </select>
+
+</mapper>

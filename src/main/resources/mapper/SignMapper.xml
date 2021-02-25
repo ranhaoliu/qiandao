@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.house.wym.dao.SignMapper">
+    <resultMap type="com.house.wym.entity.SignList" id="BasicMap">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="keyid" jdbcType="INTEGER" property="keyid"/>
+        <result column="lessonid" jdbcType="INTEGER" property="lessonid"/>
+        <result column="openid" jdbcType="VARCHAR" property="openid"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="xuehao" jdbcType="VARCHAR" property="xuehao"/>
+        <result column="signTime" jdbcType="DATE" property="signTime"/>
+    </resultMap>
+<!--    &lt;!&ndash; 按照时间顺序选择所有课程 &ndash;&gt;-->
+    <select id="getSignList" resultMap="BasicMap">
+
+        select * from signlist  where lessonid = #{lessonid} and keyid = #{keyid} order by xuehao
+    </select>
+
+    <!-- 保存签到列表 -->
+    <insert id="saveSign">
+        insert into signlist (keyid,lessonid,openid,name,xuehao,signTime)
+        values ( #{keyid},#{lessonid},
+        #{openid},#{name},#{xuehao},Now()
+        )
+    </insert>
+    <!--保存缺勤列表-->
+<!--    <insert id="saveQueQin">-->
+<!--        insert into queqin (keyid,lessonid,openid,xuehao,name,qtime)-->
+<!--        values ( #{keyid},#{lessonid},-->
+<!--        #{openid},#{xuehao},#{name},Now()-->
+<!--        )-->
+<!--    </insert>-->
+
+
+</mapper>
